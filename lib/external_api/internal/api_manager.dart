@@ -123,7 +123,7 @@ class DataFetcher{
   static Future<TokenAnswer> sendRequest(String token, CandidateRequests candidate) async {
     HttpClient client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
-    HttpClientRequest request = await client.postUrl(Uri.parse(UrlData.summaryFinal));
+    HttpClientRequest request = await client.postUrl(Uri.parse(UrlData.summary));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
     request.headers.add(HttpHeaders.authorizationHeader, 'Bearer $token');
     request.add(utf8.encode(json.encode(candidate.toJson())));

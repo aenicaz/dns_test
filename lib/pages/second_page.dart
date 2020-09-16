@@ -1,7 +1,8 @@
-import 'package:dns_test/external_api/internal/api_client.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dns_test/external_api/external_api.dart';
+import 'widgets/custom_input_widget.dart';
+import 'package:dns_test/external_api/internal/api_client.dart';
 
 class SecondPage extends StatefulWidget {
   @override
@@ -54,35 +55,13 @@ class _SecondPageState extends State<SecondPage> {
                       width: 400,
                       image: AssetImage('assets/pictures/800px-DNS_logo.png'),
                     ),
-                    SizedBox(
-                      width: 380,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                        child: TextField(
-                          controller: etGitRef,
-                          decoration: new InputDecoration(
-                            hintText: 'Ссылка на GitHub',
-                          ),
-                          style: TextStyle(
-                              fontSize: 20
-                          ),
-                        ),
-                      ),
+                    CustomInputField(
+                      hintText: 'Ссылка на GitHub',
+                      textEditingController: etGitRef,
                     ),
-                    SizedBox(
-                      width: 380,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                        child: TextField(
-                          controller: etSummary,
-                          decoration: new InputDecoration(
-                            hintText: 'Ссылка на резюме',
-                          ),
-                          style: TextStyle(
-                              fontSize: 20
-                          ),
-                        ),
-                      ),
+                    CustomInputField(
+                      hintText: 'Ссылка на резюме',
+                      textEditingController: etSummary,
                     ),
                     FlatButton(
                       color: Colors.orange.shade600,
