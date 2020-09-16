@@ -15,63 +15,51 @@ class _HomePageState extends State<HomePage> {
   TextEditingController etEmail = new TextEditingController();
   TextEditingController etPhone = new TextEditingController();
 
-  String teststr = '';
-
-  void _requestData() async{
-      ApiClient.userData = UserData(
-        firstName: etFirstName.text,
-        lastName: etLastName.text,
-        patronymic: etPatronymic.text,
-        email: etEmail.text,
-        phone: etPhone.text,
-      );
-      var response = await DataFetcher.getToken(ApiClient.userData);
-      ApiClient.apiToken = response.data;
-      print('Token ');
-      print(response.data);
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  _showSnackBar(){
+    final snackBar = new SnackBar(
+        content: new Text("Данные введены не верно"),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
+  void _requestData() async{
+    ApiClient.userData = UserData(
+      firstName: etFirstName.text,
+      lastName: etLastName.text,
+      patronymic: etPatronymic.text,
+      email: etEmail.text,
+      phone: etPhone.text,
+    );
+
+    var response = await DataFetcher.getToken(ApiClient.userData);
+    ApiClient.apiToken = response.data;
+    print('Token ');
+    print(response.data);
+
+    if(ApiClient.apiToken != null) {
+      Navigator.pushNamed(context, '/SecondPage');
+    }else {
+      _showSnackBar();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.grey.shade200,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-              height: 38,
-              width: 400,
-              image: AssetImage('assets/pictures/800px-DNS_logo.png'),
-            ),
-            Text(
-                teststr
-            ),
-            Card(
-                margin: EdgeInsets.fromLTRB(25,32, 25, 0),
-                elevation: 2,
-                child: SizedBox(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Image(
+                  height: 38,
                   width: 400,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                    child: TextField(
-                      controller: etFirstName,
-                      decoration: new InputDecoration(
-                        hintText: 'Имя',
-                      ),
-                      style: TextStyle(
-                          fontSize: 20
-                      ),
-                    ),
-                  ),
-                )
-            ),
-            SizedBox( height: 10,),
-            Card(
-                margin: EdgeInsets.symmetric( horizontal: 25),
-                elevation: 2,
-                child: SizedBox(
-                  width: 400,
+                  image: AssetImage('assets/pictures/800px-DNS_logo.png'),
+                ),
+                SizedBox(
+                  width: 380,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                     child: TextField(
@@ -84,14 +72,24 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                )
-            ),
-            SizedBox( height: 10,),
-            Card(
-                margin: EdgeInsets.symmetric(horizontal: 25),
-                elevation: 2,
-                child: SizedBox(
-                  width: 400,
+                ),
+                SizedBox(
+                    width: 380,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                      child: TextField(
+                        controller: etFirstName,
+                        decoration: new InputDecoration(
+                          hintText: 'Имя',
+                        ),
+                        style: TextStyle(
+                            fontSize: 20
+                        ),
+                      ),
+                    )
+                ),
+                SizedBox(
+                  width: 380,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                     child: TextField(
@@ -104,14 +102,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                )
-            ),
-            SizedBox( height: 10,),
-            Card(
-                margin: EdgeInsets.symmetric(horizontal: 25),
-                elevation: 2,
-                child: SizedBox(
-                  width: 400,
+                ),
+                SizedBox(
+                  width: 380,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                     child: TextField(
@@ -124,14 +117,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                )
-            ),
-            SizedBox( height: 10,),
-            Card(
-                margin: EdgeInsets.symmetric(horizontal: 25),
-                elevation: 2,
-                child: SizedBox(
-                  width: 400,
+                ),
+                SizedBox(
+                  width: 380,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                     child: TextField(
@@ -144,26 +132,24 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                )
+                ),
+                FlatButton(
+                  color: Colors.orange.shade600,
+                  textColor: Colors.grey.shade200,
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.orange.shade300,
+                  onPressed: (){
+                    _requestData();
+                  },
+                  child: Text(
+                    "Получить ключ",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+              ],
             ),
-            SizedBox( height: 10,),
-            FlatButton(
-              color: Colors.orange.shade600,
-              textColor: Colors.grey.shade200,
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.orange.shade300,
-              onPressed: (){
-                teststr += '1';
-                Navigator.pushNamed(context, '/SecondPage');
-                _requestData();
-              },
-              child: Text(
-                "Получить ключ",
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

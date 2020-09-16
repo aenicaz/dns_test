@@ -30,6 +30,7 @@ void main() {
     );
     var finalResponse = await DataFetcher.sendRequest(response.data, testRequest);
 
-    print(finalResponse.toJson());
+      if (finalResponse.code != 0)
+        print(finalResponse.toJson());
   });
 }

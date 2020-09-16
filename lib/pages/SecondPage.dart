@@ -12,34 +12,50 @@ class _SecondPageState extends State<SecondPage> {
   TextEditingController etGitRef = new TextEditingController();
   TextEditingController etSummary= new TextEditingController();
 
+  int _code;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  _showSnackBar(String content){
+    final snackBar = new SnackBar(
+      content: new Text(content),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
 
   void _registerUser() async{
       ApiClient.candidateRequest.summary = etSummary.text;
       ApiClient.candidateRequest.githubProfileUrl = etGitRef.text;
 
       var finalResponse = await DataFetcher.sendRequest(ApiClient.apiToken, ApiClient.candidateRequest);
+      _code = finalResponse.code;
       print('Final registration with token');
       print(finalResponse.toJson());
+
+      if (_code != 0 ) {
+        _showSnackBar("Данные введены неверно");
+      } else {
+        _showSnackBar("Поздравляем! Регистрация завершена");
+      }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.grey.shade200,
       body: SafeArea(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image(
-                  height: 38,
-                  width: 400,
-                  image: AssetImage('assets/pictures/800px-DNS_logo.png'),
-                ),
-                Card(
-                    margin: EdgeInsets.fromLTRB(25,32, 25, 0),
-                    elevation: 2,
-                    child: SizedBox(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                  children: [
+                    Image(
+                      height: 38,
                       width: 400,
+                      image: AssetImage('assets/pictures/800px-DNS_logo.png'),
+                    ),
+                    SizedBox(
+                      width: 380,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                         child: TextField(
@@ -52,14 +68,9 @@ class _SecondPageState extends State<SecondPage> {
                           ),
                         ),
                       ),
-                    )
-                ),
-                SizedBox( height: 10,),
-                Card(
-                    margin: EdgeInsets.fromLTRB(25,32, 25, 0),
-                    elevation: 2,
-                    child: SizedBox(
-                      width: 400,
+                    ),
+                    SizedBox(
+                      width: 380,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                         child: TextField(
@@ -72,24 +83,24 @@ class _SecondPageState extends State<SecondPage> {
                           ),
                         ),
                       ),
+                    ),
+                    FlatButton(
+                      color: Colors.orange.shade600,
+                      textColor: Colors.grey.shade200,
+                      disabledTextColor: Colors.black,
+                      padding: EdgeInsets.all(8.0),
+                      splashColor: Colors.orange.shade300,
+                      onPressed: (){
+                        _registerUser();
+                      },
+                      child: Text(
+                        "Завершить регистрацию",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
                     )
-                ),
-                FlatButton(
-                  color: Colors.orange.shade600,
-                  textColor: Colors.grey.shade200,
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.orange.shade300,
-                  onPressed: (){
-                    Navigator.pushNamed(context, '/SecondPage');
-                    _registerUser();
-                  },
-                  child: Text(
-                    "Получить ключ",
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                )
-              ]
+                  ]
+              ),
+            ),
           )
       ),
     );
