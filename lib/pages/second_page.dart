@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'package:dns_test/external_api/external_api.dart';
 import 'widgets/custom_input_widget.dart';
@@ -36,7 +37,22 @@ class _SecondPageState extends State<SecondPage> {
       if (_code != 0 ) {
         _showSnackBar("Данные введены неверно");
       } else {
-        _showSnackBar("Поздравляем! Регистрация завершена");
+        Alert(
+          context: context,
+          title: "Регистрация завершена",
+          desc: "Регистрация успешно завершена. Спасибо за заявку",
+          image: Image.asset("assets/pictures/clipart514935.png"),
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Закрыть ",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              color: Colors.lightGreen,
+            ),
+          ],
+        ).show();
       }
   }
 

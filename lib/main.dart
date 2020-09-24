@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'pages/bloc/home_page_text_data_cubit.dart';
 import 'pages/home_page.dart';
 import 'pages/second_page.dart';
 
@@ -18,7 +20,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/' : (context) => HomePage(),
+        '/' : (context) => BlocProvider.value(
+            value: HomePageTextDataCubit(),
+            child: HomePage(),
+        ),
         '/SecondPage': (context) => SecondPage(),
       },
     );

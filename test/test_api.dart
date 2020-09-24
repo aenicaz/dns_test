@@ -23,14 +23,14 @@ void main() {
 
     print(response.data);
 
-    var testRequest = CandidateRequests(
+    var tryGetToken = CandidateRequests(
       user: userData,
-      summary: 'https://vladivostok.hh.ru/resume/c9489981ff0845ef630039ed1f777147775462',
-      githubProfileUrl: 'https://github.com/aenicaz',
+      summary: 'test',
+      githubProfileUrl: 'https://github.com/test',
     );
-    var finalResponse = await DataFetcher.sendRequest(response.data, testRequest);
+    var finalResponse = await DataFetcher.sendRequest(response.data, tryGetToken);
 
-      if (finalResponse.code != 0)
+//      if (finalResponse.code != 0)
         print(finalResponse.toJson());
   });
 }
